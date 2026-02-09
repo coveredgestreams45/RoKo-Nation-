@@ -1,152 +1,214 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Bayern Match</title>
+<meta charset="UTF-8">
+<title>Star Sports 1HD Hindi - Live</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        background: #000;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-    #container {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #000;
-    }
-    iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
+/* Pure Black Premium Theme */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:#000000;
+  color:#ffffff;
+  overflow:hidden;
+  user-select:none;
+}
 
-    /* Modal */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      backdrop-filter: blur(6px);
-      background: rgba(0,0,0,0.4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      animation: fadeIn .5s ease;
-    }
-    .modal.hidden {
-      display: none !important;
-    }
-    .modal-content {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 30px 25px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      color: #f3f4f6;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      backdrop-filter: blur(12px);
-      transform: scale(.95);
-      animation: scaleIn .4s ease forwards;
-    }
-    .modal-content h2 {
-      font-size: 24px;
-      font-weight: 700;
-      color: #facc15;
-      margin-bottom: 16px;
-    }
-    .modal-content p {
-      font-size: 16px;
-      color: #d1d5db;
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
-    .modal-content strong {
-      color: #fff;
-    }
-    .modal-content .btn {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: none;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: .3s;
-    }
-    #joinButton {
-      background: linear-gradient(to right,#3b82f6,#06b6d4);
-      color: #fff;
-      font-weight: 500;
-    }
-    #joinButton:hover {
-      background: linear-gradient(to right,#2563eb,#0891b2);
-      transform: scale(1.02);
-    }
-    #closeButton {
-      background: rgba(255,255,255,0.1);
-      color: #f3f4f6;
-    }
-    #closeButton:hover {
-      background: rgba(255,255,255,0.15);
-      transform: scale(1.02);
-    }
+body.popup-active .main-content {
+  filter: blur(10px);
+  pointer-events: none;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0 }
-      to { opacity: 1 }
-    }
-    @keyframes scaleIn {
-      to { transform: scale(1); opacity: 1 }
-    }
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.top-bar {
+  text-align: center;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ff0000; /* Star Sports Red */
+  border-bottom: 1px solid #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Player Container */
+.player-wrap {
+  position: relative;
+  flex-grow: 1;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-wrap iframe {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  border: none;
+}
+
+/* Fullscreen Button Overlay */
+.fs-overlay {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.fs-btn {
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  backdrop-filter: blur(5px);
+}
+
+.error-msg {
+  display: none;
+  text-align: center;
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+/* POPUP */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+}
+
+.btn-join {
+  display: block;
+  background: #0088cc;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.btn-done {
+  display: block;
+  width: 100%;
+  background: #222;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
 </style>
 </head>
 
-<body>
+<body oncontextmenu="return false" class="popup-active">
 
-<div id="container">
-    <iframe 
-        src="https://threeisfree1-hash.github.io/SOULxCLIPS/"
-        allow="encrypted-media; fullscreen"
-        allowfullscreen>
-    </iframe>
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <h2 style="color:#ff0000">STAR SPORTS 1HD</h2>
+    <p style="color:#888">Join Telegram to Unlock Hindi Commentary</p>
+    <a class="btn-join" href="https://t.me/modderguylive" target="_blank">JOIN TELEGRAM</a>
+    <button class="btn-done" onclick="closePopup()">ALREADY JOINED</button>
+  </div>
 </div>
 
-<!-- Telegram Popup Modal -->
-<div id="telegramModal" class="modal" role="dialog" aria-modal="true">
-  <div class="modal-content">
-    <h2>Join our Telegram</h2>
-    <p>
-      Stay updated with the latest <strong>Live Match Links</strong> and updates.
-      Click below to join our official Telegram channel.
-    </p>
-    <a href="https://t.me/soulxclips" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
-      <button id="joinButton" class="btn">Join Telegram</button>
-    </a>
-    <button id="closeButton" class="btn">Maybe Later</button>
+<div class="main-content">
+  <div class="top-bar">Star Sports 1HD Hindi • Live</div>
+
+  <div class="player-wrap" id="player-container">
+    <div id="loading">Initialising Secure Stream...</div>
+    <div id="expired" class="error-msg">ACCESS EXPIRED (6H LIMIT)</div>
+    
+    <div class="fs-overlay">
+        <button class="fs-btn" onclick="toggleFS()">FULL SCREEN</button>
+    </div>
   </div>
 </div>
 
 <script>
-  const modal = document.getElementById('telegramModal');
-  const closeBtn = document.getElementById('closeButton');
+/* SECURITY: Iframe link is obfuscated via Base64. 
+   String below decodes to: https://cricketstan.github.io/Channel-13
+*/
+const _0xencoded = "aHR0cHM6Ly9jcmlja2V0c3Rhbi5naXRodWIuaW8vQ2hhbm5lbC0xMw==";
 
-  closeBtn.addEventListener('click', () => {
-    modal.classList.add('hidden');
-  });
+function loadPlayer() {
+    const container = document.getElementById('player-container');
+    const loadTxt = document.getElementById('loading');
+    const expireTxt = document.getElementById('expired');
+
+    const SIX_HOURS = 6 * 60 * 60 * 1000;
+    const startTime = localStorage.getItem('ss1_hindi_time');
+    const now = new Date().getTime();
+
+    if (!startTime) {
+        localStorage.setItem('ss1_hindi_time', now);
+    } else if (now - startTime > SIX_HOURS) {
+        loadTxt.style.display = 'none';
+        expireTxt.style.display = 'block';
+        return;
+    }
+
+    // Inject iframe dynamically
+    const ifrm = document.createElement('iframe');
+    ifrm.id = "live-player";
+    ifrm.src = atob(_0xencoded);
+    ifrm.allowFullscreen = true;
+    ifrm.setAttribute("allow", "autoplay; encrypted-media; fullscreen");
+    ifrm.onload = () => { loadTxt.style.display = 'none'; };
+    
+    container.appendChild(ifrm);
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+    document.body.classList.remove('popup-active');
+    loadPlayer();
+}
+
+function toggleFS() {
+    const elem = document.getElementById("player-container");
+    if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => {
+            alert(`Error attempting to enable full-screen mode: ${err.message}`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+// Block Inspect Elements
+document.onkeydown = function(e) {
+    if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
+        return false;
+    }
+};
 </script>
 
 </body>
-
 </html>

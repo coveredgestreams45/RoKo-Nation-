@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Star Sports 1HD Hindi - Premium</title>
+<title>Star Sports 1HD - Premium</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
-:root { --p: #ff0000; --b: #000000; --s: rgba(255, 255, 255, 0.1); }
+:root { --p: #ff0000; --b: #000000; }
 *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
 body{ margin:0; font-family: -apple-system, sans-serif; background: var(--b); color: #fff; overflow: hidden; user-select: none; }
 
@@ -14,32 +14,29 @@ body.popup-active .main-ui { filter: blur(20px); pointer-events: none; }
 
 .main-ui { display: flex; flex-direction: column; height: 100vh; padding: 15px; }
 
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 5px; }
-.live-tag { background: var(--p); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.live-tag { background: var(--p); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: bold; }
 
 .player-box { 
     flex-grow: 1; 
     background: #000; 
     border-radius: 12px; 
-    border: 1px solid var(--s); 
     position: relative; 
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Chrome/YouTube full-screen fix */
-iframe { 
+/* Ensure iframe fills container and remains interactive */
+#stream-player { 
     width: 100%; 
     height: 100%; 
     border: none; 
-    position: absolute; 
-    top:0; left:0; 
-    background: #000;
 }
 
-.msg { position: absolute; text-align: center; z-index: 5; color: var(--p); font-weight: bold; }
+.msg { position: absolute; text-align: center; color: var(--p); font-weight: bold; }
 
 /* POPUP */
 .pop-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: flex; align-items: center; justify-content: center; z-index: 999; }
@@ -58,16 +55,16 @@ iframe {
 
 <div class="pop-overlay" id="gate">
   <div class="pop-card">
-    <h2 style="margin:0; color:var(--p); font-size: 22px;">STAR SPORTS 1HD</h2>
-    <p style="color:#888; font-size: 13px; margin-top:8px;">Hindi HD Stream (Chrome Optimized)</p>
+    <h2 style="margin:0; color:var(--p);">STAR SPORTS 1HD</h2>
+    <p style="color:#888; font-size: 13px; margin-top:8px;">Hindi HD • Tomorrow 1 AM Expiry</p>
     <a class="tg-link" href="https://t.me/modderguylive" target="_blank">JOIN TELEGRAM</a>
-    <button class="done-btn" onclick="startStream()">ALREADY JOINED</button>
+    <button class="done-btn" onclick="unlockAndPlay()">ALREADY JOINED</button>
   </div>
 </div>
 
 <div class="main-ui">
   <div class="header">
-    <div style="font-weight:bold; font-size:18px; letter-spacing: -0.5px;">STAR <span style="color:var(--p)">SPORTS 1HD</span></div>
+    <div style="font-weight:bold; font-size:18px;">STAR <span style="color:var(--p)">SPORTS 1HD</span></div>
     <div class="live-tag">LIVE</div>
   </div>
 
@@ -79,12 +76,12 @@ iframe {
 </div>
 
 <script>
-// Obfuscated Stream Source
+// Encrypted Source
 const _0xV = [104,116,116,112,115,58,47,47,99,114,105,99,107,101,116,115,116,97,110,46,103,105,116,104,117,98,46,105,111,47,67,104,97,110,110,101,108,45,49,51];
 
-function startStream() {
+function unlockAndPlay() {
     const now = new Date();
-    // Hard Expiry: Feb 11, 2026, 01:00:00
+    // Expiry: Feb 11, 2026, 01:00 AM
     const expiry = new Date(2026, 1, 11, 1, 0, 0);
 
     if (now >= expiry) {
@@ -94,28 +91,29 @@ function startStream() {
         return;
     }
 
-    // Close popup
+    // Remove popup immediately
     document.getElementById('gate').style.display = 'none';
     document.body.classList.remove('popup-active');
     
-    // Create Iframe with YouTube-compatible attributes
-    const box = document.getElementById('viewport');
-    const ifr = document.createElement('iframe');
+    // BUILD THE IFRAME STRING DIRECTLY
+    // This method is more reliable for Chrome's policy than document.createElement
+    const src = _0xV.map(c => String.fromCharCode(c)).join('');
+    const viewport = document.getElementById('viewport');
     
-    // Decrypt source
-    ifr.src = _0xV.map(c => String.fromCharCode(c)).join('');
-    
-    // Critical attributes for Full Screen and Quality controls in Chrome
-    ifr.setAttribute("allow", "autoplay; encrypted-media; fullscreen; picture-in-picture");
-    ifr.setAttribute("allowfullscreen", "true");
-    ifr.setAttribute("webkitallowfullscreen", "true");
-    ifr.setAttribute("mozallowfullscreen", "true");
-    ifr.setAttribute("referrerpolicy", "no-referrer");
-    
-    box.appendChild(ifr);
+    viewport.innerHTML = `
+        <iframe 
+            id="stream-player"
+            src="${src}" 
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; display-capture" 
+            allowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            mozallowfullscreen="true" 
+            referrerpolicy="no-referrer">
+        </iframe>
+    `;
 }
 
-// Anti-Leech Protection
+// Block Inspect
 document.onkeydown = (e) => {
     if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
 };

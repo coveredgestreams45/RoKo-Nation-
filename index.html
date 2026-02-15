@@ -2,23 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Star Sports 2 Hindi - Live</title>
+<title>Star Sports 2 Hindi - Private</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
-:root { --p: #00ff4c; --b: #000000; } /* Changed color to green for SS2 style */
+:root { --p: #00ff6a; --b: #000000; }
 *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
 body{ margin:0; font-family: -apple-system, sans-serif; background: var(--b); color: #fff; overflow: hidden; user-select: none; }
-body.popup-active .main-ui { filter: blur(20px); pointer-events: none; }
+body.popup-active .main-ui { filter: blur(25px); pointer-events: none; }
 .main-ui { display: flex; flex-direction: column; height: 100vh; padding: 10px; }
 .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; }
 .live-tag { background: #ff0000; padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: bold; }
 .video-container { width: 100%; position: relative; padding-top: 56.25%; background: #000; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
 #stream-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+.msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #ff0000; font-weight: bold; }
 .pop-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: flex; align-items: center; justify-content: center; z-index: 999; }
 .pop-card { background: #0a0a0a; border: 1px solid #222; padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 340px; }
 .tg-link { display: block; background: #0088cc; color: #fff; padding: 14px; border-radius: 10px; text-decoration: none; font-weight: bold; margin: 15px 0; }
-.done-btn { background: #fff; border: none; color: #000; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100% ;}
+.done-btn { background: #fff; border: none; color: #000; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
 </style>
 </head>
 
@@ -27,9 +28,9 @@ body.popup-active .main-ui { filter: blur(20px); pointer-events: none; }
 <div class="pop-overlay" id="gate">
   <div class="pop-card">
     <h2 style="margin:0; color:var(--p);">STAR SPORTS 2</h2>
-    <p style="color:#888; font-size: 13px; margin-top:8px;">Hindi HD Stream</p>
+    <p style="color:#888; font-size: 13px; margin-top:8px;">Hindi HD • Expiry 16 Feb, 1 AM</p>
     <a class="tg-link" href="https://t.me/modderguylive" target="_blank">JOIN TELEGRAM</a>
-    <button class="done-btn" onclick="unlockAndPlay()">WATCH NOW</button>
+    <button class="done-btn" onclick="unlockAndPlay()">ALREADY JOINED</button>
   </div>
 </div>
 
@@ -38,20 +39,38 @@ body.popup-active .main-ui { filter: blur(20px); pointer-events: none; }
     <div style="font-weight:bold; font-size:18px;">STAR <span style="color:var(--p)">SPORTS 2</span></div>
     <div class="live-tag">LIVE</div>
   </div>
-  <div class="video-container" id="viewport"></div>
+
+  <div class="video-container" id="viewport">
+    <div id="expired-txt" class="msg" style="display:none;">
+        STREAM EXPIRED<br><span style="color:#555; font-size:10px;">Access ended on 16 Feb</span>
+    </div>
+  </div>
 </div>
 
 <script>
+// Hidden Base64 URL for Star Sports 2
+const _0xK = "aHR0cHM6Ly9hbGxyb3VuZGVyLWtpbmcucGFnZXMuZGV2L2NoYW5uZWwvc3Rhci1zcG9ydHMtMi1oaW5kaQ==";
+
 function unlockAndPlay() {
+    const now = new Date();
+    // Expiry: Feb 16, 2026, 01:00:00 (Month is 0-indexed, so 1 = Feb)
+    const expiry = new Date(2026, 1, 16, 1, 0, 0);
+
+    if (now >= expiry) {
+        document.getElementById('gate').style.display = 'none';
+        document.body.classList.remove('popup-active');
+        document.getElementById('expired-txt').style.display = 'block';
+        return;
+    }
+
     document.getElementById('gate').style.display = 'none';
     document.body.classList.remove('popup-active');
     
-    // Updated URL for Star Sports 2
-    const src = "https://allrounder-king.pages.dev/channel/star-sports-2-hindi";
+    // Decoding the hidden URL
+    const src = atob(_0xK);
     const viewport = document.getElementById('viewport');
     
-    // The "sandbox" attribute is key here:
-    // It prevents the iframe from opening new windows (ads) or popups.
+    // Sandbox added to "fix" ads by preventing them from opening new tabs
     viewport.innerHTML = `
         <iframe 
             id="stream-player"
@@ -63,6 +82,12 @@ function unlockAndPlay() {
         </iframe>
     `;
 }
+
+// Anti-Inspect Elements
+document.onkeydown = (e) => {
+    if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
+};
 </script>
+
 </body>
 </html>

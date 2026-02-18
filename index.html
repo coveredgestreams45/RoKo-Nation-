@@ -9,14 +9,11 @@
 :root { --p: #00ff6a; --b: #000000; }
 *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
 body{ margin:0; font-family: -apple-system, sans-serif; background: var(--b); color: #fff; overflow: hidden; user-select: none; }
-/* Removed blur filter from .main-ui */
 .main-ui { display: flex; flex-direction: column; height: 100vh; padding: 10px; }
 .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; }
 .live-tag { background: #ff0000; padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: bold; }
 .video-container { width: 100%; position: relative; padding-top: 56.25%; background: #000; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
 #stream-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-.msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #ff0000; font-weight: bold; }
-/* The pop-overlay is now hidden by default */
 .pop-overlay { display: none; } 
 </style>
 </head>
@@ -30,22 +27,20 @@ body{ margin:0; font-family: -apple-system, sans-serif; background: var(--b); co
   </div>
 
   <div class="video-container" id="viewport">
-    <div id="expired-txt" class="msg" style="display:none;">
-        STREAM EXPIRED<br><span style="color:#555; font-size:10px;">Access ended on 16 Feb</span>
     </div>
-  </div>
 </div>
 
 <script>
+// Encoded stream source
 const _0xK = "aHR0cHM6Ly9hbGxyb3VuZGVyLWtpbmcucGFnZXMuZGV2L2NoYW5uZWwvc3Rhci1zcG9ydHMtMi1oaW5kaQ==";
 
-// Automatically run the player logic on page load
 window.onload = function() {
     const now = new Date();
-    const expiry = new Date(2026, 1, 16, 1, 0, 0);
+    // Set to March 9, 2026, at 06:00:00
+    const expiry = new Date(2026, 2, 9, 6, 0, 0);
 
+    // If current time is past expiry, do nothing (blank player)
     if (now >= expiry) {
-        document.getElementById('expired-txt').style.display = 'block';
         return;
     }
 
